@@ -19,6 +19,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import static org.ehcache.config.CacheConfigurationBuilder.newCacheConfigurationBuilder;
+import static org.ehcache.config.writebehind.WriteBehindConfigurationBuilder.newWriteBehindConfiguration;
 import static org.ehcache.jsr107.Eh107Configuration.fromEhcacheCacheConfiguration;
 
 /**
@@ -37,6 +38,10 @@ public class VideoRepository {
       manager.createCache("video-cache", fromEhcacheCacheConfiguration(
               newCacheConfigurationBuilder()
                       .add(new DefaultCacheLoaderWriterConfiguration(RealVideoRepository.class))
+                      .add(newWriteBehindConfiguration()
+                              .batchSize(10)
+                              .delay(2, 5)
+                              .enableCoalescing())
               .buildConfig(Object.class, Object.class)));
     }
   }
