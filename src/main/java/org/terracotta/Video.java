@@ -1,6 +1,8 @@
 package org.terracotta;
 
-public class Video {
+import java.io.Serializable;
+
+public class Video implements Serializable {
 
   private final String title;
   private final int id;
